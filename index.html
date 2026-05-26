@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobHunterOP — AI-Powered Job Search Pipeline (by Bidi Bhai)</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Background Glows -->
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  <div class="glow glow-3"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="container nav-container">
+      <div class="logo">
+        <i data-lucide="shield-check" class="logo-icon"></i>
+        <span>JobHunter<span>OP</span></span>
+      </div>
+      <nav>
+        <a href="#features">Features</a>
+        <a href="#terminal">Terminal Demo</a>
+        <a href="#calculator">Score Calculator</a>
+        <span class="badge">by Bidi Bhai</span>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container hero-container">
+      <div class="hero-content">
+        <h1>Onboard, Evaluate, <span class="gradient-text">Dominate.</span></h1>
+        <p class="subtitle">An advanced, AI-powered job search automation pipeline for Gemini CLI & Claude Code. Zero-token scans, ATS resume optimization, and high-signal matching.</p>
+        <div class="cta-buttons">
+          <a href="#terminal" class="btn btn-primary">
+            <i data-lucide="terminal"></i> Live Demo
+          </a>
+          <a href="#calculator" class="btn btn-secondary">
+            <i data-lucide="calculator"></i> Score Fit
+          </a>
+        </div>
+        <div class="cli-badge">
+          <span class="pulse"></span>
+          <code>npx jobhunter-op install</code>
+        </div>
+      </div>
+      
+      <!-- Visual Element -->
+      <div class="hero-visual">
+        <div class="glass-card visual-card">
+          <div class="card-header">
+            <div class="dots">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+            </div>
+            <div class="window-title">System Status</div>
+          </div>
+          <div class="card-body">
+            <div class="status-row">
+              <span class="status-label">Pipeline Liveness:</span>
+              <span class="status-value success"><i data-lucide="circle-dot"></i> Active</span>
+            </div>
+            <div class="status-row">
+              <span class="status-label">Scan History:</span>
+              <span class="status-value">742 job postings deduped</span>
+            </div>
+            <div class="status-row">
+              <span class="status-label">Engine:</span>
+              <span class="status-value highlight">Gemini CLI Native</span>
+            </div>
+            <div class="divider"></div>
+            <div class="metric-grid">
+              <div class="metric-box">
+                <span class="metric-val">4.8<span class="max">/5</span></span>
+                <span class="metric-lbl">Target Match</span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-val">0<span class="max"> tokens</span></span>
+                <span class="metric-lbl">Scanner cost</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="features">
+    <div class="container">
+      <div class="section-header">
+        <h2>Built for High-Signal Job Seekers</h2>
+        <p>Forget the spray-and-pray method. Land your dream AI/engineering role with strategic data.</p>
+      </div>
+      
+      <div class="features-grid">
+        <div class="glass-card feature-card">
+          <div class="feature-icon"><i data-lucide="scan-eye"></i></div>
+          <h3>Zero-Token Scanner</h3>
+          <p>Direct integration with Greenhouse, Ashby, and Lever APIs. Instantly extracts active listings with zero LLM query overhead.</p>
+        </div>
+        
+        <div class="glass-card feature-card">
+          <div class="feature-icon"><i data-lucide="file-check-2"></i></div>
+          <h3>ATS-PDF Generator</h3>
+          <p>Generates targeted, custom, and professional resumes in PDF format styled perfectly with HTML/CSS templates or pdflatex compilers.</p>
+        </div>
+
+        <div class="glass-card feature-card">
+          <div class="feature-icon"><i data-lucide="trending-up"></i></div>
+          <h3>STAR Story Bank</h3>
+          <p>Automatically records key achievements and star interview questions mapping to evaluation insights across your pipeline.</p>
+        </div>
+
+        <div class="glass-card feature-card">
+          <div class="feature-icon"><i data-lucide="shield-alert"></i></div>
+          <h3>Legitimacy Verification</h3>
+          <p>Verifies postings via Playwright automation checks to ensure they are live opportunities, separating the ghost jobs from real leads.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Terminal Simulator -->
+  <section id="terminal" class="terminal-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Interactive CLI Experience</h2>
+        <p>See how the step-by-step onboarding and scoring work in the terminal.</p>
+      </div>
+
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <div class="dots">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <div class="window-title">bidi@terminal: ~/jobhunter-op</div>
+          <div class="action-btn-container">
+            <button id="restart-terminal" title="Restart simulation"><i data-lucide="rotate-ccw"></i></button>
+          </div>
+        </div>
+        <div class="terminal-body" id="terminal-content">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Score Calculator -->
+  <section id="calculator" class="calculator-section">
+    <div class="container calculator-container">
+      <div class="calculator-info">
+        <h2>Interactive Fit Score Calculator</h2>
+        <p>In JobHunterOP, offers are evaluated using a strict A-G scoring model to evaluate targets. Adjust the values on the right to see how the system ranks opportunities in real-time.</p>
+        <ul class="score-rules">
+          <li><strong>Role Fit (40%):</strong> Alignment with target archetypes and skill matrix.</li>
+          <li><strong>Compensation (30%):</strong> Base salary, equity multipliers, and local flexibility.</li>
+          <li><strong>Growth & Team (20%):</strong> Engineering culture, runway, and funding signals.</li>
+          <li><strong>Legitimacy (10%):</strong> Real posting versus headhunter spam or ghost role.</li>
+        </ul>
+      </div>
+
+      <div class="glass-card calculator-card">
+        <h3>Fit Score Estimator</h3>
+        <div class="calc-grid">
+          <div class="sliders">
+            <div class="slider-group">
+              <label for="val-role">Role Alignment <span id="lbl-role">80%</span></label>
+              <input type="range" id="val-role" min="0" max="100" value="80" class="custom-slider">
+            </div>
+            
+            <div class="slider-group">
+              <label for="val-comp">Compensation Fit <span id="lbl-comp">70%</span></label>
+              <input type="range" id="val-comp" min="0" max="100" value="70" class="custom-slider">
+            </div>
+
+            <div class="slider-group">
+              <label for="val-growth">Growth & Culture <span id="lbl-growth">85%</span></label>
+              <input type="range" id="val-growth" min="0" max="100" value="85" class="custom-slider">
+            </div>
+
+            <div class="slider-group">
+              <label for="val-legit">Posting Legitimacy <span id="lbl-legit">95%</span></label>
+              <input type="range" id="val-legit" min="0" max="100" value="95" class="custom-slider">
+            </div>
+          </div>
+
+          <div class="score-result">
+            <div class="circular-progress">
+              <svg width="180" height="180" class="progress-ring">
+                <circle class="progress-ring__circle-bg" stroke="#1f293d" stroke-width="12" fill="transparent" r="70" cx="90" cy="90"/>
+                <circle id="progress-ring__circle" class="progress-ring__circle" stroke="url(#gradient)" stroke-width="12" fill="transparent" r="70" cx="90" cy="90"/>
+                <defs>
+                  <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#3b82f6" />
+                    <stop offset="100%" stop-color="#8b5cf6" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div class="score-text">
+                <span id="final-score">3.9</span>
+                <span class="max-val">/ 5.0</span>
+              </div>
+            </div>
+            <div class="verdict" id="score-verdict">Evaluating...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-container">
+      <p>JobHunterOP is open-source. Created and maintained by <a href="https://github.com/bidi-bhai" target="_blank">Bidi Bhai</a>.</p>
+      <div class="footer-links">
+        <a href="https://github.com/bidi-bhai/JobHunterOP" target="_blank"><i data-lucide="github"></i> Repository</a>
+        <a href="https://discord.gg/8pRpHETxa4" target="_blank"><i data-lucide="message-square"></i> Discord</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Lucide Icon initialization -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Scripts -->
+  <script src="script.js"></script>
+</body>
+</html>
