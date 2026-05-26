@@ -29,7 +29,7 @@
         <a href="#features">Features</a>
         <a href="#terminal">Terminal Demo</a>
         <a href="#calculator">Score Calculator</a>
-        <span class="badge">by Bidi Bhai</span>
+        <a href="https://sahajch.vercel.app" target="_blank" class="badge">by Bidi Bhai</a>
       </nav>
     </div>
   </header>
@@ -48,9 +48,10 @@
             <i data-lucide="calculator"></i> Score Fit
           </a>
         </div>
-        <div class="cli-badge">
-          <span class="pulse"></span>
-          <code>npx jobhunter-op install</code>
+        <div class="cta-install">
+          <button id="btn-install-trigger" class="btn btn-primary">
+            <i data-lucide="download"></i> Install Now
+          </button>
         </div>
       </div>
       
@@ -224,13 +225,51 @@
   <!-- Footer -->
   <footer>
     <div class="container footer-container">
-      <p>JobHunterOP is open-source. Created and maintained by <a href="https://github.com/bidi-bhai" target="_blank">Bidi Bhai</a>.</p>
+      <p>JobHunterOP is open-source. Made by <a href="https://github.com/ChawlaBhai" target="_blank">Bidi Bhai</a>.</p>
       <div class="footer-links">
-        <a href="https://github.com/bidi-bhai/JobHunterOP" target="_blank"><i data-lucide="github"></i> Repository</a>
-        <a href="https://discord.gg/8pRpHETxa4" target="_blank"><i data-lucide="message-square"></i> Discord</a>
+        <a href="https://github.com/ChawlaBhai/JobHunterOP?tab=readme-ov-file" target="_blank"><i data-lucide="github"></i> GitHub</a>
       </div>
     </div>
   </footer>
+
+  <!-- Modal Dialog for Install Instructions -->
+  <div id="install-modal" class="modal-overlay">
+    <div class="glass-card modal-card">
+      <div class="modal-header">
+        <h3>Install JobHunterOP</h3>
+        <button id="modal-close" class="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Follow these steps to download and set up JobHunterOP on your machine:</p>
+        
+        <div class="step">
+          <span class="step-num">1</span>
+          <div class="step-content">
+            <h4>Clone the Repository</h4>
+            <pre><code>git clone https://github.com/ChawlaBhai/JobHunterOP.git
+cd JobHunterOP</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <span class="step-num">2</span>
+          <div class="step-content">
+            <h4>Install Dependencies</h4>
+            <pre><code>npm install</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <span class="step-num">3</span>
+          <div class="step-content">
+            <h4>Configure and Run</h4>
+            <p>Personalize the configurations and run onboarding on first startup:</p>
+            <pre><code>node index.mjs</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Lucide Icon initialization -->
   <script src="https://unpkg.com/lucide@latest"></script>

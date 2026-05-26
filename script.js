@@ -158,4 +158,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Start terminal typing simulation
   runTerminalSimulation();
+
+  // 4. Install Modal logic
+  const btnInstallTrigger = document.getElementById('btn-install-trigger');
+  const installModal = document.getElementById('install-modal');
+  const modalClose = document.getElementById('modal-close');
+
+  if (btnInstallTrigger && installModal && modalClose) {
+    btnInstallTrigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      installModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+
+    const closeModalFunc = () => {
+      installModal.classList.remove('active');
+      document.body.style.overflow = '';
+    };
+
+    modalClose.addEventListener('click', closeModalFunc);
+
+    // Close on backdrop click
+    installModal.addEventListener('click', (e) => {
+      if (e.target === installModal) {
+        closeModalFunc();
+      }
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && installModal.classList.contains('active')) {
+        closeModalFunc();
+      }
+    });
+  }
 });
+
