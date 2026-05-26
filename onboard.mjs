@@ -188,14 +188,25 @@ Use the candidate's exit story: "${data.exit_story || ''}"
       }
     }
 
-    if (data.target_roles && data.target_roles.length > 0) {
-      const keywords = new Set(['AI', 'ML', 'LLM', 'Agent', 'Agentic']);
+        if (data.target_roles && data.target_roles.length > 0) {
+      const keywords = new Set();
       for (const role of data.target_roles) {
         keywords.add(role);
-        const parts = role.split(/\s+/);
-        for (const part of parts) {
-          const clean = part.replace(/[^a-zA-Z]/g, '');
-          if (clean.length > 3) keywords.add(clean);
+        const rLower = role.toLowerCase();
+        if (rLower === 'founders office') {
+          keywords.add("Founder's Office");
+          keywords.add("Founders Associate");
+          keywords.add("Founder's Associate");
+        } else if (rLower === 'chief of staff') {
+          keywords.add("CoS");
+        } else if (rLower === 'operations strategy') {
+          keywords.add("Strategy & Operations");
+          keywords.add("Strategy and Operations");
+          keywords.add("Strategic Operations");
+        } else if (rLower === 'ai operations') {
+          keywords.add("AI Ops");
+        } else if (rLower === 'generalist') {
+          keywords.add("Operations Generalist");
         }
       }
       portalsObj.title_filter = portalsObj.title_filter || {};

@@ -28,9 +28,10 @@
  * `modelName` below and the `--model` examples accordingly.
  */
 
-import { readFileSync, existsSync, writeFileSync, mkdirSync } from 'fs';
+import { readFileSync, existsSync, writeFileSync, mkdirSync, unlinkSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { execSync } from 'child_process';
 
 // ---------------------------------------------------------------------------
 // Bootstrap: load .env before anything else
@@ -126,18 +127,55 @@ if (!jdText) {
 }
 
 // ---------------------------------------------------------------------------
-// Validate environment
+// Validate environment and CLI fallback
 // ---------------------------------------------------------------------------
-const apiKey = process.env.GEMINI_API_KEY;
+let apiKey = process.env.GEMINI_API_KEY;
+let localCli = null;
+
 if (!apiKey) {
-  console.error(`
-❌  GEMINI_API_KEY not found.
+  console.log('🔑  GEMINI_API_KEY not set. Attempting keyless fallback using local CLI...');
+  
+  const clis = ['claude', 'gemini', 'copilot', 'qwen', 'codex', 'opencode'];
+  for (const cli of clis) {
+    try {
+      // Evaluate fnm env first, then run which
+      const check = execSync(`eval "$(fnm env --shell zsh)" 2>/dev/null && which ${cli}`, {
+        shell: 'zsh',
+        encoding: 'utf-8',
+        stdio: ['pipe', 'pipe', 'ignore']
+      });
+      if (check && check.trim()) {
+        localCli = cli;
+        break;
+      }
+    } catch (e) {
+      try {
+        const checkDirect = execSync(`which ${cli}`, {
+          encoding: 'utf-8',
+          stdio: ['pipe', 'pipe', 'ignore']
+        });
+        if (checkDirect && checkDirect.trim()) {
+          localCli = cli;
+          break;
+        }
+      } catch (err) {
+        // ignore
+      }
+    }
+  }
+
+  if (!localCli) {
+    console.error(`
+❌  GEMINI_API_KEY not found and no local AI CLI found (claude, gemini, copilot, qwen, codex, opencode).
 
    1. Get a free key at https://aistudio.google.com/apikey
    2. Add it to .env:   GEMINI_API_KEY=your_key_here
    3. Or export it:     export GEMINI_API_KEY=your_key_here
 `);
-  process.exit(1);
+    process.exit(1);
+  }
+  
+  console.log(`🤖  Found local CLI: ${localCli}. Will leverage your logged-in session.\n`);
 }
 
 // ---------------------------------------------------------------------------
@@ -235,35 +273,75 @@ LEGITIMACY: <High Confidence | Proceed with Caution | Suspicious>
 `;
 
 // ---------------------------------------------------------------------------
-// Call Gemini API
+// Execute Evaluation (API or CLI Fallback)
 // ---------------------------------------------------------------------------
-console.log(`🤖  Calling Gemini (${modelName})... this may take 30-60 seconds.\n`);
-
-const genAI = new GoogleGenerativeAI(apiKey);
-const model = genAI.getGenerativeModel({
-  model: modelName,
-  generationConfig: {
-    temperature: 0.4,      // deterministic enough for structured evaluation
-    maxOutputTokens: 8192, // full 7-block evaluation
-  },
-});
-
 let evaluationText;
-try {
-  const result = await model.generateContent([
-    { text: systemPrompt },
-    { text: `\n\nJOB DESCRIPTION TO EVALUATE:\n\n${jdText}` },
-  ]);
-  evaluationText = result.response.text();
-} catch (err) {
-  const sanitizedMsg = (err.message || '').split(apiKey).join('[REDACTED]');
-  console.error('❌  Gemini API error:', sanitizedMsg);
-  if (sanitizedMsg.includes('API_KEY')) {
-    console.error('    Check your GEMINI_API_KEY in .env');
-  } else if (sanitizedMsg.includes('quota') || sanitizedMsg.includes('rate')) {
-    console.error('    You may have hit the free-tier rate limit. Wait 60s and retry.');
+
+if (localCli) {
+  console.log(`🤖  Calling ${localCli} CLI... this may take 30-60 seconds.\n`);
+  
+  const fullPrompt = `${systemPrompt}\n\nJOB DESCRIPTION TO EVALUATE:\n\n${jdText}`;
+  const tempFile = join(ROOT, `.resolved-prompt-${Date.now()}.txt`);
+  
+  try {
+    writeFileSync(tempFile, fullPrompt, 'utf-8');
+    
+    const cliConfigs = {
+      claude: (f) => `claude -p "$(cat "${f}")"`,
+      gemini: (f) => `gemini -p "$(cat "${f}")"`,
+      copilot: (f) => `copilot -p "$(cat "${f}")"`,
+      qwen: (f) => `qwen -p "$(cat "${f}")"`,
+      codex: (f) => `codex exec "$(cat "${f}")"`,
+      opencode: (f) => `opencode run "$(cat "${f}")"`,
+    };
+    
+    const runCmd = `eval "$(fnm env --shell zsh)" 2>/dev/null && ${cliConfigs[localCli](tempFile)}`;
+    
+    evaluationText = execSync(runCmd, {
+      shell: 'zsh',
+      encoding: 'utf-8',
+      maxBuffer: 10 * 1024 * 1024 // 10MB buffer
+    });
+  } catch (err) {
+    console.error(`❌  Local CLI (${localCli}) execution failed:`, err.message);
+    process.exit(1);
+  } finally {
+    try {
+      if (existsSync(tempFile)) {
+        unlinkSync(tempFile);
+      }
+    } catch (e) {
+      // ignore
+    }
   }
-  process.exit(1);
+} else {
+  console.log(`🤖  Calling Gemini (${modelName}) API... this may take 30-60 seconds.\n`);
+
+  const genAI = new GoogleGenerativeAI(apiKey);
+  const model = genAI.getGenerativeModel({
+    model: modelName,
+    generationConfig: {
+      temperature: 0.4,      // deterministic enough for structured evaluation
+      maxOutputTokens: 8192, // full 7-block evaluation
+    },
+  });
+
+  try {
+    const result = await model.generateContent([
+      { text: systemPrompt },
+      { text: `\n\nJOB DESCRIPTION TO EVALUATE:\n\n${jdText}` },
+    ]);
+    evaluationText = result.response.text();
+  } catch (err) {
+    const sanitizedMsg = (err.message || '').split(apiKey).join('[REDACTED]');
+    console.error('❌  Gemini API error:', sanitizedMsg);
+    if (sanitizedMsg.includes('API_KEY')) {
+      console.error('    Check your GEMINI_API_KEY in .env');
+    } else if (sanitizedMsg.includes('quota') || sanitizedMsg.includes('rate')) {
+      console.error('    You may have hit the free-tier rate limit. Wait 60s and retry.');
+    }
+    process.exit(1);
+  }
 }
 
 // ---------------------------------------------------------------------------

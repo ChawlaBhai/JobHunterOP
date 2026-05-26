@@ -118,15 +118,85 @@ function resolveProvider(entry, providers, { skipIds = [] } = {}) {
 
 // ── Title filter ────────────────────────────────────────────────────
 
-function buildTitleFilter(titleFilter) {
-  const positive = (titleFilter?.positive || []).map(k => k.toLowerCase());
-  const negative = (titleFilter?.negative || []).map(k => k.toLowerCase());
+function buildProfileTitleFilter(profile, portalsTitleFilter) {
+  // 1. Get primary target roles from profile
+  const targetRoles = (profile?.target_roles?.primary || []).map(r => r.toLowerCase().trim());
+  
+  // Define variations/keywords for target roles to ensure we match them properly
+  const targetPatterns = [];
+  
+  for (const role of targetRoles) {
+    if (role.includes('founders office')) {
+      targetPatterns.push(/founder'?s?\s+office/i);
+      targetPatterns.push(/founder'?s?\s+associate/i);
+      targetPatterns.push(/office\s+of\s+the\s+founder/i);
+    } else if (role.includes('chief of staff')) {
+      targetPatterns.push(/chief\s+of\s+staff/i);
+      targetPatterns.push(/\bcos\b/i);
+    } else if (role.includes('operations strategy')) {
+      targetPatterns.push(/operations?\s+strategy/i);
+      targetPatterns.push(/strateg(y|ic)\s+operations?/i);
+      targetPatterns.push(/strategy\s+&\s+operations?/i);
+      targetPatterns.push(/strategy\s+and\s+operations?/i);
+      targetPatterns.push(/strategy\s+&\s+ops/i);
+      targetPatterns.push(/strategy\s+and\s+ops/i);
+    } else if (role.includes('generalist')) {
+      targetPatterns.push(/\bgeneralist\b/i);
+    } else if (role.includes('ai operations')) {
+      targetPatterns.push(/ai\s+operations?/i);
+      targetPatterns.push(/ai\s+ops/i);
+      targetPatterns.push(/operations?\s+ai/i);
+    } else {
+      // Fallback: match the role phrase directly as substring
+      const escaped = role.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+      targetPatterns.push(new RegExp(escaped, 'i'));
+    }
+  }
+
+  // 2. Load positive/negative filters from portals.yml
+  const portalsPositive = (portalsTitleFilter?.positive || []).map(k => k.toLowerCase());
+  const portalsNegative = (portalsTitleFilter?.negative || []).map(k => k.toLowerCase());
+
+  // Broad single words that match too many irrelevant things in portals.yml
+  const broadSingleWords = new Set([
+    'office', 'chief', 'staff', 'operations', 'strategy', 'founders'
+  ]);
+
+  // Filter out broad single words from portals positive keywords to prevent false positives
+  const refinedPortalsPositive = portalsPositive.filter(k => !broadSingleWords.has(k));
 
   return (title) => {
     const lower = title.toLowerCase();
-    const hasPositive = positive.length === 0 || positive.some(k => lower.includes(k));
-    const hasNegative = negative.some(k => lower.includes(k));
-    return hasPositive && !hasNegative;
+
+    // Standard negative keywords (e.g. Junior, Intern, .NET, Java, etc.)
+    const hasNegative = portalsNegative.some(k => lower.includes(k));
+    if (hasNegative) return false;
+
+    // Seniority checks based on profile archetypes:
+    // If the candidate only targets "Senior" or higher, and the title explicitly has junior markers:
+    const isJuniorRole = /\b(junior|jr|intern|associate|graduate|entry|trainee|ii)\b/i.test(title) &&
+                         !/founder'?s?\s+associate/i.test(title); // "Founders Associate" is not junior
+    
+    // If the candidate's target roles are defined, we check if the title matches any target patterns.
+    if (targetPatterns.length > 0) {
+      const matchesTarget = targetPatterns.some(pattern => pattern.test(title));
+      if (!matchesTarget) return false;
+    } else if (refinedPortalsPositive.length > 0) {
+      // Fallback to portals positive list if target patterns is empty
+      const hasPositive = refinedPortalsPositive.some(k => lower.includes(k));
+      if (!hasPositive) return false;
+    }
+
+    // If it's a junior role (e.g. has "II" or "Associate" but not "Founders Associate"), discard it if we target Senior
+    if (isJuniorRole) {
+      const archetypes = profile?.target_roles?.archetypes || [];
+      const hasOnlySenior = archetypes.length > 0 && archetypes.every(a => a.level === 'Senior');
+      if (hasOnlySenior) {
+        return false;
+      }
+    }
+
+    return true;
   };
 }
 
@@ -396,7 +466,19 @@ async function main() {
 
   const config = parseYaml(readFileSync(PORTALS_PATH, 'utf-8'));
   const companies = config.tracked_companies || [];
-  const titleFilter = buildTitleFilter(config.title_filter);
+
+  // Load profile for smart filtering
+  let profile = {};
+  const profilePath = 'config/profile.yml';
+  if (existsSync(profilePath)) {
+    try {
+      profile = yaml.load(readFileSync(profilePath, 'utf-8')) || {};
+    } catch (err) {
+      console.warn(`⚠️  Could not parse config/profile.yml: ${err.message}`);
+    }
+  }
+
+  const titleFilter = buildProfileTitleFilter(profile, config.title_filter);
   const locationFilter = buildLocationFilter(config.location_filter);
 
   // 3. Resolve a provider for each enabled company

@@ -131,16 +131,15 @@ If `modes/_profile.md` is missing, copy from `modes/_profile.template.md` silent
 
 **If ANY of these is missing, enter onboarding mode.** Do NOT proceed with evaluations, scans, or any other mode until the basics are in place. Guide the user step by step:
 
-#### Step 1: CV (required)
+#### Step 1: CV and LinkedIn (required)
 If `cv.md` is missing, ask:
-> "I don't have your CV yet. You can either:
-> 1. Paste your CV here and I'll convert it to markdown
-> 2. Paste your LinkedIn URL and I'll extract the key info
-> 3. Tell me about your experience and I'll draft a CV for you
+> "I need both your CV/Resume and your LinkedIn URL to personalize the system and analyze your profile effectively. Please provide:
+> 1. Your LinkedIn URL
+> 2. Your CV/Resume (you can paste the text, upload a file, or describe your background)
 >
-> Which do you prefer?"
+> Please share both so I can build a complete profile for you."
 
-Create `cv.md` from whatever they provide. Make it clean markdown with standard sections (Summary, Experience, Projects, Education, Skills).
+Create `cv.md` from whatever they provide, and store the LinkedIn URL under `candidate.linkedin` in `config/profile.yml`. Make the CV clean markdown with standard sections (Summary, Experience, Projects, Education, Skills).
 
 #### Step 2: Profile (required)
 If `config/profile.yml` is missing, copy from `config/profile.example.yml` and then ask:
