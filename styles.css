@@ -167,6 +167,28 @@ nav a:hover {
   color: var(--text-primary);
 }
 
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 18px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 101;
+  padding: 0;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: var(--text-primary);
+  border-radius: 4px;
+  transition: var(--transition);
+}
+
 /* Hero Section */
 .hero {
   padding: 10rem 0 6rem 0;
@@ -817,39 +839,75 @@ footer a:hover {
 
 @media (max-width: 768px) {
   header {
-    position: absolute;
-    background: rgba(11, 17, 30, 0.95);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(11, 17, 30, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 100;
+    padding: 1rem 0;
   }
   
   .nav-container {
-    flex-direction: column;
-    gap: 0.8rem;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
+    width: 100%;
+    padding: 0 1.5rem;
   }
   
   nav {
-    gap: 1.2rem;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 260px;
+    height: 100vh;
+    background: rgba(11, 17, 30, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-left: 1px solid var(--border-color);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2.5rem;
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
+    box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+  }
+  
+  nav.active {
+    right: 0;
+  }
+  
+  .nav-toggle {
+    display: flex;
+  }
+  
+  .nav-toggle.active span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+  
+  .nav-toggle.active span:nth-child(2) {
+    opacity: 0;
+  }
+  
+  .nav-toggle.active span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
   }
   
   nav a {
-    font-size: 0.85rem;
-  }
-  
-  .badge {
-    padding: 0.2rem 0.6rem;
-    font-size: 0.75rem;
-  }
-  
-  .logo {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
+    font-weight: 600;
   }
   
   .hero {
-    padding: 7rem 0 3rem 0;
+    padding: 9rem 0 4rem 0;
   }
   
   .hero-content h1 {
-    font-size: 3rem;
+    font-size: 2.8rem;
   }
   
   .features {
@@ -863,9 +921,13 @@ footer a:hover {
 }
 
 @media (max-width: 600px) {
+  .hero {
+    padding: 8rem 0 3rem 0;
+  }
+  
   .hero-content h1 {
     font-size: 2.2rem;
-    line-height: 1.2;
+    line-height: 1.25;
   }
   
   .subtitle {
@@ -884,7 +946,7 @@ footer a:hover {
   .btn {
     width: 100%;
     justify-content: center;
-    padding: 0.7rem 1.5rem;
+    padding: 0.75rem 1.5rem;
     font-size: 0.9rem;
   }
   
@@ -892,11 +954,13 @@ footer a:hover {
   .terminal-window {
     width: 100%;
     border-radius: 8px;
+    margin: 0 auto;
+    overflow: hidden;
   }
   
   .terminal-body {
-    height: 280px;
-    font-size: 0.75rem;
+    height: 250px;
+    font-size: 0.72rem;
     padding: 0.8rem;
     line-height: 1.4;
     overflow-x: auto;
@@ -905,7 +969,7 @@ footer a:hover {
   
   .features-grid {
     grid-template-columns: 1fr;
-    max-width: 340px;
+    max-width: 320px;
   }
   
   .feature-card {
@@ -970,17 +1034,8 @@ footer a:hover {
     font-size: 1.2rem;
   }
   
-  nav {
-    gap: 0.8rem;
-  }
-  
   nav a {
-    font-size: 0.8rem;
-  }
-  
-  .badge {
-    font-size: 0.7rem;
-    padding: 0.15rem 0.5rem;
+    font-size: 1rem;
   }
   
   .hero-content h1 {

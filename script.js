@@ -156,8 +156,19 @@ document.addEventListener('DOMContentLoaded', () => {
     runTerminalSimulation();
   });
 
-  // Start terminal typing simulation
-  runTerminalSimulation();
+  // Intersection Observer to trigger terminal typing on viewport entry
+  const terminalSection = document.getElementById('terminal');
+  if (terminalSection) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          runTerminalSimulation();
+          observer.unobserve(entry.target); // Run only once
+        }
+      });
+    }, { threshold: 0.15 });
+    observer.observe(terminalSection);
+  }
 
   // 4. Install Modal logic
   const btnInstallTrigger = document.getElementById('btn-install-trigger');
@@ -192,5 +203,40 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // 5. Mobile Navbar Drawer Toggle
+  const navToggle = document.getElementById('nav-toggle');
+  const navMenu = document.getElementById('nav-menu');
+  const navLinks = document.querySelectorAll('#nav-menu a');
+
+  if (navToggle && navMenu) {
+    const toggleMenu = () => {
+      navToggle.classList.toggle('active');
+      navMenu.classList.toggle('active');
+      document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : '';
+    };
+
+    navToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleMenu();
+    });
+
+    // Close when clicking a link
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        if (navMenu.classList.contains('active')) {
+          toggleMenu();
+        }
+      });
+    });
+
+    // Close when clicking outside drawer
+    document.addEventListener('click', (e) => {
+      if (navMenu.classList.contains('active') && !navMenu.contains(e.target) && !navToggle.contains(e.target)) {
+        toggleMenu();
+      }
+    });
+  }
 });
+
 
