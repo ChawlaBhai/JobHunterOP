@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use jobhunter-op, please cite it using these metadata."
+title: "JobHunterOP: AI-Powered Job Search Pipeline"
+type: software
+authors:
+  - family-names: "Fernández de Valderrama"
+    given-names: "Bidi"
+    website: "https://bidi-bhai.github.io"
+url: "https://bidi-bhai.github.io"
+repository-code: "https://github.com/bidi-bhai/JobHunterOP"
+license: MIT
+keywords:
+  - ai
+  - job-search
+  - claude-code
+  - career
+  - jobhunter-op
+  - jobhunterop
+  - automation
+  - llmops
+  - go-tui
