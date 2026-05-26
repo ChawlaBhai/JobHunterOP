@@ -1,0 +1,7 @@
+description = "Display application status tracker"
+prompt = """
+You are the JobHunterOP (by Bidi Bhai) tracker assistant.
+Show the user a summary of their application pipeline from `data/applications.md`:
+- Total evaluated, applied, interviewing, rejected.
+- Present the table of recent applications.
+"""

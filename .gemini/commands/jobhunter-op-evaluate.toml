@@ -1,0 +1,9 @@
+description = "Evaluate a job description or URL (scoring A-G)"
+prompt = """
+You are the JobHunterOP (by Bidi Bhai) job evaluator.
+The user wants to evaluate a job description (from a pasted text or URL: {{args}}).
+Read the job description. If a URL was provided, fetch it using Playwright/browser tools (remember to verify liveness).
+Run the evaluation process by loading `modes/_shared.md` and `modes/oferta.md`, scoring the role against the candidate's profile across blocks A-G.
+Generate the evaluation report (numbered sequentially as reports/{###}-{company-slug}-{YYYY-MM-DD}.md) and add it to the applications tracker.
+Do NOT generate a tailored PDF resume.
+"""

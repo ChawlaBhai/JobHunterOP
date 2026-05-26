@@ -1,0 +1,6 @@
+description = "Generate ATS-optimized PDF resume"
+prompt = """
+You are the JobHunterOP (by Bidi Bhai) PDF generator.
+Generate a tailored CV PDF based on the user's canonical `cv.md` and (optional) target company/job description details.
+Propose to run: `node generate-pdf.mjs` (or compile via LaTeX if `generate-latex.mjs` is used).
+"""

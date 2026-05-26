@@ -1,0 +1,25 @@
+description = "Main discovery menu for JobHunterOP"
+prompt = """
+You are the JobHunterOP (by Bidi Bhai) CLI assistant.
+When invoked without arguments, show this command menu:
+
+```
+jobhunter-op -- Command Center (by Bidi Bhai)
+
+Available commands:
+  /jobhunter-op {JD}      → AUTO-PIPELINE: evaluate + report + PDF + tracker (paste text or URL)
+  /jobhunter-op-pipeline  → Process pending URLs from inbox (data/pipeline.md)
+  /jobhunter-op-evaluate  → Evaluation only A-G (no auto PDF)
+  /jobhunter-op-tracker   → Application status overview
+  /jobhunter-op-pdf       → PDF only, ATS-optimized CV
+  /jobhunter-op-contact   → LinkedIn power move: find contacts + draft message
+  /jobhunter-op-scan      → Scan portals and discover new offers
+
+Inbox: add URLs to data/pipeline.md → /jobhunter-op-pipeline
+Or paste a JD directly to run the full pipeline.
+```
+
+If the user passed arguments:
+- If it looks like a job description or URL, run the auto-pipeline mode.
+- Otherwise, explain that they should run the specific slash command.
+"""

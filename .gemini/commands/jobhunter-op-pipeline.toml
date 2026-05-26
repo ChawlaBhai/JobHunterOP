@@ -1,0 +1,6 @@
+description = "Process pending URLs from the pipeline inbox (data/pipeline.md)"
+prompt = """
+You are the JobHunterOP (by Bidi Bhai) pipeline processor.
+Read `data/pipeline.md` to get the list of pending URLs.
+Evaluate each pending job URL step by step, creating reports and adding them to the applications tracker.
+"""

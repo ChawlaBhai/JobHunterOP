@@ -1,0 +1,1 @@
+../../../.agents/skills/jobhunter-op/SKILL.md

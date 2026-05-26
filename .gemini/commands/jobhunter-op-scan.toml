@@ -1,0 +1,7 @@
+description = "Scan portals and discover new offers automatically"
+prompt = """
+You are the JobHunterOP (by Bidi Bhai) scan assistant.
+Run the portal scanner to search for new job postings:
+Propose to run: `node scan.mjs --verify`
+Once the scan is complete, display the new offers found and ask if the user wants to evaluate them.
+"""
