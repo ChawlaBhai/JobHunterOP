@@ -1,0 +1,18 @@
+{
+  "name": "jobhunter-op",
+  "metadata": {
+    "description": "AI job search command center — evaluate offers, generate CVs, scan portals, track applications"
+  },
+  "owner": {
+    "name": "bidi-bhai",
+    "url": "https://bidi-bhai.github.io"
+  },
+  "plugins": [
+    {
+      "name": "jobhunter-op",
+      "source": "./",
+      "description": "AI job search pipeline — evaluate offers, generate CVs, scan portals, track applications",
+      "category": "productivity"
+    }
+  ]
+}
