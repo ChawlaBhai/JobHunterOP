@@ -67,6 +67,7 @@ For each question, generate the response following:
 3. **"I'm choosing you" tone**: Same auto-pipeline framework
 4. **Specificity**: Reference something specific from the JD visible on screen
 5. **jobhunter-op proof point**: Include in "Additional info" if there is a field for it
+6. **Humanized Style (Crucial)**: Follow the instructions in `_shared.md` under "Humanized & ATS-Optimized Writing Engine". Absolutely no en-dashes, em-dashes, semicolons, or AI buzzwords. Write simple, active-voice sentences with varied lengths that sound conversational and natural.
 
 **Output format:**
 

@@ -102,6 +102,19 @@ Once onboarding is complete, use these commands inside your session:
 
 ---
 
+## 🚀 How to Use JobHunterOP Like a Pro
+
+To get the absolute best results out of JobHunterOP, follow this highly effective 6-step workflow:
+
+1. **Onboard & Calibrate (`/get-me-hired`):** Run the onboarding wizard to configure your profile and CV. For best results, add 1 or 2 past writing samples (e.g., cover letters or emails) to `writing-samples/` so the humanizer engine can capture and match your natural writing style.
+2. **Scan & Verify (`/jobhunter-op-scan`):** Search Greenhouse, Lever, Ashby, Naukri, and other portals. **Always run with `--verify`** (e.g., `node scan.mjs --verify`) to execute Playwright liveness checks. This strips out ghost postings, dead links, and pages without apply buttons before you spend tokens on them.
+3. **Review & Batch Process (`/jobhunter-op-pipeline`):** View your inbox in `data/pipeline.md`. Delete low-interest rows, and process the remaining ones. This runs evaluations, scores the matches, and automatically drafts tailored resumes for each role.
+4. **Auto-Fill Applications (`/jobhunter-op-apply`):** For roles scoring `4.0/5.0+`, run the live application assistant. The agent opens Chrome, auto-populates all form questions with custom-tailored humanized answers, uploads the generated PDF resume, and stands by for your final manual click to submit.
+5. **LinkedIn Outreach Sniper (`/jobhunter-op-contact`):** Do not wait for a callback. Immediately run the contact command to find decision-makers at the company and generate a non-AI-sounding cold message to send.
+6. **Track Your Pipeline (`/jobhunter-op-tracker` or TUI):** Use the Bubble Tea TUI dashboard (`./job-dashboard`) to track your interviews, offers, and callbacks locally.
+
+---
+
 ## Customizing Portals
 
 JobHunterOP comes pre-configured with **45+ companies** and **19 search queries** targeting top platforms. To customize:

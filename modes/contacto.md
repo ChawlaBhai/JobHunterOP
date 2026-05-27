@@ -46,8 +46,9 @@
 
 **Message rules:**
 - Maximum 300 characters (LinkedIn connection request limit)
-- NO corporate-speak
-- NO "I'm passionate about..."
+- NO corporate-speak, en-dashes, em-dashes, or semicolons
+- NO AI clichés (e.g. "passionate", "leverage", "delve")
 - Something that makes them want to respond
 - NEVER share phone number
 - The contact type changes the EMPHASIS, not the structure
+- **Humanized style:** Keep it short, conversational, and direct, as if you typed it on your phone while walking. Avoid structured list styles.
